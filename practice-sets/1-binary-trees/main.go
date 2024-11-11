@@ -31,14 +31,72 @@ func buildSampleTree() *TreeNode {
 	}
 }
 
+// Helper function to build a sample symmetric tree
+func buildSampleSymmetricTree() *TreeNode {
+	return &TreeNode{
+		Val: 1,
+		Left: &TreeNode{
+			Val: 2,
+			Left: &TreeNode{
+				Val: 3,
+			},
+			Right: &TreeNode{
+				Val: 4,
+			},
+		},
+		Right: &TreeNode{
+			Val: 2,
+			Left: &TreeNode{
+				Val: 4,
+			},
+			Right: &TreeNode{
+				Val: 3,
+			},
+		},
+	}
+}
+
+// Helper function to build tree for pathsum2 problem
+func buildTreeForPathSum2() *TreeNode {
+	return &TreeNode{
+		Val: 5,
+		Left: &TreeNode{
+			Val: 4,
+			Left: &TreeNode{
+				Val: 11,
+				Left: &TreeNode{
+					Val: 7,
+				},
+				Right: &TreeNode{
+					Val: 2,
+				},
+			},
+		},
+		Right: &TreeNode{
+			Val: 8,
+			Left: &TreeNode{
+				Val: 13,
+			},
+			Right: &TreeNode{
+				Val: 4,
+				Left: &TreeNode{
+					Val: 5,
+				},
+				Right: &TreeNode{
+					Val: 1,
+				},
+			},
+		},
+	}
+}
+
+// https://leetcode.com/problems/maximum-depth-of-binary-tree/description/
 // Maximum Depth of Binary Tree
 func maxDepth(root *TreeNode) int {
 	if root == nil {
 		return 0
 	}
-	leftDepth := maxDepth(root.Left)
-	rightDepth := maxDepth(root.Right)
-	return max(leftDepth, rightDepth) + 1
+	return 1 + max(maxDepth(root.Left), maxDepth(root.Right))
 }
 
 // Symmetric Tree
@@ -132,10 +190,11 @@ func depthAndDiameter(node *TreeNode) (int, int) {
 	if node == nil {
 		return 0, 0
 	}
+
 	leftDepth, leftDiameter := depthAndDiameter(node.Left)
 	rightDepth, rightDiameter := depthAndDiameter(node.Right)
-	maxDiameter := max(leftDiameter, rightDiameter)
-	return max(leftDepth, rightDepth) + 1, max(maxDiameter, leftDepth+rightDepth)
+
+	return 1 + max(leftDepth, rightDepth), max(leftDiameter, rightDiameter, leftDepth+rightDepth)
 }
 
 // Merge Two Binary Trees
@@ -152,18 +211,25 @@ func mergeTrees(t1, t2 *TreeNode) *TreeNode {
 	return t1
 }
 
-// Minimum Depth of Binary Tree
+// Min depth
 func minDepth(root *TreeNode) int {
+	return -1 * minDepthHelper(root)
+}
+
+// Min depth helper
+func minDepthHelper(root *TreeNode) int {
 	if root == nil {
 		return 0
 	}
-	if root.Left == nil {
-		return minDepth(root.Right) + 1
+	return max(minDepthHelper(root.Left), minDepthHelper(root.Right)) - 1
+}
+
+// Min depth alt
+func minDepth2(root *TreeNode) int {
+	if root == nil {
+		return 0
 	}
-	if root.Right == nil {
-		return minDepth(root.Left) + 1
-	}
-	return min(minDepth(root.Left), minDepth(root.Right)) + 1
+	return min(minDepth2(root.Left), minDepth2(root.Right)) + 1
 }
 
 // Range Sum of BST
@@ -184,19 +250,55 @@ func rangeSumBST(root *TreeNode, L int, R int) int {
 	return sum
 }
 
-// Utility functions for min and max
-func max(a, b int) int {
-	if a > b {
-		return a
+// Helper function to print the tree in preorder for visual confirmation
+func printPreorder(node *TreeNode) {
+	if node == nil {
+		return
 	}
-	return b
+	fmt.Print(node.Val, " ")
+	printPreorder(node.Left)
+	printPreorder(node.Right)
 }
 
-func min(a, b int) int {
-	if a < b {
-		return a
+// Level order traversal of a binary tree
+func levelOrderTraversal(root *TreeNode) {
+	q := []*TreeNode{root}
+
+	for len(q) > 0 {
+		size := len(q)
+		for i := 0; i < size; i++ {
+			node := q[0]
+			q = q[1:]
+
+			fmt.Print(node.Val, " ")
+			if node.Left != nil {
+				q = append(q, node.Left)
+			}
+			if node.Right != nil {
+				q = append(q, node.Right)
+			}
+		}
 	}
-	return b
+}
+
+// https://leetcode.com/problems/path-sum-ii/description/
+// Path Sum 2
+func pathSum2(root *TreeNode, targetSum int, tmp []int, res *[][]int) {
+	if root == nil {
+		return
+	}
+	tmp = append(tmp, root.Val)
+	if root.Left == nil && root.Right == nil {
+		if root.Val == targetSum {
+			path := make([]int, len(tmp))
+			copy(path, tmp)
+			*res = append(*res, path)
+			return
+		}
+	}
+	newTarget := targetSum - root.Val
+	pathSum2(root.Left, newTarget, tmp, res)
+	pathSum2(root.Right, newTarget, tmp, res)
 }
 
 // Main function to test each problem
@@ -208,19 +310,7 @@ func main() {
 	fmt.Println("Maximum Depth of Binary Tree:", maxDepth(root))
 
 	// Test Symmetric Tree
-	symmetricRoot := &TreeNode{
-		Val: 1,
-		Left: &TreeNode{
-			Val:   2,
-			Left:  &TreeNode{Val: 3},
-			Right: &TreeNode{Val: 4},
-		},
-		Right: &TreeNode{
-			Val:   2,
-			Left:  &TreeNode{Val: 4},
-			Right: &TreeNode{Val: 3},
-		},
-	}
+	symmetricRoot := buildSampleSymmetricTree()
 	fmt.Println("Symmetric Tree:", isSymmetric(symmetricRoot))
 
 	// Test Invert Binary Tree
@@ -229,8 +319,17 @@ func main() {
 	printPreorder(root)
 	fmt.Println()
 
+	fmt.Println("Binary Tree (Level Order Traversal):")
+	levelOrderTraversal(buildSampleTree())
+	fmt.Println()
+
 	// Test Path Sum
 	fmt.Println("Has Path Sum (target 10):", hasPathSum(root, 10))
+
+	// Test Path Sum 2
+	var pathSumRes [][]int
+	pathSum2(buildTreeForPathSum2(), 22, []int{}, &pathSumRes)
+	fmt.Println("PathSum2 result: ", pathSumRes)
 
 	// Test Binary Tree Paths
 	fmt.Println("Binary Tree Paths:", binaryTreePaths(root))
@@ -251,16 +350,10 @@ func main() {
 	// Test Minimum Depth of Binary Tree
 	fmt.Println("Minimum Depth of Binary Tree:", minDepth(root))
 
+	// Test Minimum Depth of Binary Tree Alt
+	fmt.Println("Minimum Depth2 of Binary Tree:", minDepth2(root))
+
 	// Test Range Sum of BST
 	fmt.Println("Range Sum of BST (Range 4 to 9):", rangeSumBST(root, 4, 9))
-}
 
-// Helper function to print the tree in preorder for visual confirmation
-func printPreorder(node *TreeNode) {
-	if node == nil {
-		return
-	}
-	fmt.Print(node.Val, " ")
-	printPreorder(node.Left)
-	printPreorder(node.Right)
 }
