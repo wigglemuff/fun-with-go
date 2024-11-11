@@ -99,6 +99,7 @@ func maxDepth(root *TreeNode) int {
 	return 1 + max(maxDepth(root.Left), maxDepth(root.Right))
 }
 
+// https://leetcode.com/problems/symmetric-tree/description/
 // Symmetric Tree
 func isSymmetric(root *TreeNode) bool {
 	if root == nil {
@@ -117,6 +118,7 @@ func isMirror(left, right *TreeNode) bool {
 	return isMirror(left.Left, right.Right) && isMirror(left.Right, right.Left)
 }
 
+// https://leetcode.com/problems/invert-binary-tree/description/
 // Invert Binary Tree
 func invertTree(root *TreeNode) *TreeNode {
 	if root == nil {
@@ -128,6 +130,7 @@ func invertTree(root *TreeNode) *TreeNode {
 	return root
 }
 
+// https://leetcode.com/problems/path-sum/description/
 // Path Sum
 func hasPathSum(root *TreeNode, targetSum int) bool {
 	if root == nil {
@@ -140,6 +143,7 @@ func hasPathSum(root *TreeNode, targetSum int) bool {
 	return hasPathSum(root.Left, targetSum) || hasPathSum(root.Right, targetSum)
 }
 
+// https://leetcode.com/problems/binary-tree-paths/description/
 // Binary Tree Paths
 func binaryTreePaths(root *TreeNode) []string {
 	var paths []string
@@ -197,6 +201,7 @@ func depthAndDiameter(node *TreeNode) (int, int) {
 	return 1 + max(leftDepth, rightDepth), max(leftDiameter, rightDiameter, leftDepth+rightDepth)
 }
 
+// https://leetcode.com/problems/merge-two-binary-trees/description/
 // Merge Two Binary Trees
 func mergeTrees(t1, t2 *TreeNode) *TreeNode {
 	if t1 == nil {
@@ -211,6 +216,7 @@ func mergeTrees(t1, t2 *TreeNode) *TreeNode {
 	return t1
 }
 
+// https://leetcode.com/problems/minimum-depth-of-binary-tree/
 // Min depth
 func minDepth(root *TreeNode) int {
 	return -1 * minDepthHelper(root)
@@ -232,6 +238,7 @@ func minDepth2(root *TreeNode) int {
 	return min(minDepth2(root.Left), minDepth2(root.Right)) + 1
 }
 
+// https://leetcode.com/problems/range-sum-of-bst/description/
 // Range Sum of BST
 func rangeSumBST(root *TreeNode, L int, R int) int {
 	if root == nil {
