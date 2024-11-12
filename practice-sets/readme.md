@@ -17,7 +17,8 @@
 1. Range sum BST – https://leetcode.com/problems/range-sum-of-bst/description/
 
 ## Island Problems
-1. Placeholder
+1. Number of islands - https://leetcode.com/problems/number-of-islands/description/ 
+1. Max area of an island - https://leetcode.com/problems/max-area-of-island/ 
 
 ## File Operations
 1. Create a file
