@@ -27,8 +27,8 @@
 1. Read a large file line by line (use Scanner)
 1. Write data to a file
 1. Append data to a file
-1. Delete a file
 1. Write data to a file line by line (use buffer)
+1. Delete a file
 
 ## Regex Operations
 1. Match a string with a pattern
