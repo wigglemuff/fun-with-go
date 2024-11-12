@@ -31,12 +31,16 @@
 1. Delete a file
 
 ## Regex Operations
-1. Match a string with a pattern
-1. Compile a pattern
-1. Match with compiled pattern
-1. Find matched pattern
-1. Find matched pattern's index
-1. Find submatch
-1. Find submatch's index
-
+1. Match a string without compiling the pattern
+1. Compile a pattern and match a string
+1. Find string
+1. Find string index
+1. Find all string
+1. Find all string index
+1. Find string submatch
+1. Find string submatch index
+1. Find all string submatch
+1. Find all string submatch index
+1. Replace all string
+1. Split string
 
