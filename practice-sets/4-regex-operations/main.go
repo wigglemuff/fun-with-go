@@ -21,31 +21,38 @@ func main() {
 	p(r.MatchString("bat")) // true
 	p(r.MatchString("bot")) // false
 
-	// 3. Find matched string
+	// 3. Find string
 	p(r.FindString("bot sat bat"))    // bot
 	p(r.FindString("plot slot blot")) // lot
 
-	// 4. Find matched strings's index
+	// 4. Find string index
 	p(r.FindStringIndex("bot sat bat"))    // [0 3]
 	p(r.FindStringIndex("plot slot blot")) // [1 4]
 
-	// 5. Find all strings
+	// 5. Find all string
 	p(r.FindAllString("bot sat bat", -1)) // [bot sat bat]
 	p(r.FindAllString("bot sat bat", 2))  // [bot sat]
 
-	// 6. Find a string submatch
+	// 6. Find all string index
+	p(r.FindAllStringIndex("bot sat bat", -1)) // [[0 3] [4 7] [8 11]]
+
+	// 7. Find string submatch
 	r2 := regexp.MustCompile(`p([a-z]+)ch`)
-	p(r2.FindStringSubmatch("peach pooch paach"))      // [peach ea]
+	p(r2.FindStringSubmatch("peach pooch paach")) // [peach ea]
+
+	// 8. Find string submatch index
 	p(r2.FindStringSubmatchIndex("peach pooch paach")) // [0 5 1 3]
 
-	// 7. Find all string submatches
-	p(r2.FindAllStringSubmatch("peach pooch paach", -1))      // [[peach ea] [pooch oo] [paach aa]]
+	// 9. Find all string submatch
+	p(r2.FindAllStringSubmatch("peach pooch paach", -1)) // [[peach ea] [pooch oo] [paach aa]]
+
+	// 10. Find all string submatch index
 	p(r2.FindAllStringSubmatchIndex("peach pooch paach", -1)) // [[0 5 1 3] [6 11 7 9] [12 17 13 15]]
 
-	// 8. Replace
+	// 11. Replace
 	p(r2.ReplaceAllString("peach pooch paach", "foo")) // foo foo foo
 
-	// 9. Split
+	// 12. Split
 	r3 := regexp.MustCompile(`\s+`)
 	p(r3.Split("a b    c", -1)) // [a b c]
 	p(r3.Split("a b    c", 3))  // [a b c]
