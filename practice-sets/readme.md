@@ -44,3 +44,10 @@
 1. Replace all string
 1. Split string
 
+## String Manipulation
+1. Reverse a string
+1. Is Palindrome
+1. First non repeating character
+1. Longest substring without repeating characters
+1. Remove words from a string that belong to a set of blocked words
+1. Compress a string For example, "aabcccccaaa" → "a2b1c5a3"
