@@ -115,10 +115,11 @@ func deleteBook(w http.ResponseWriter, r *http.Request) {
 
 func main() {
 
-	// Populating books with some sample data
+	// Sample data
 	books = append(books, Book{ID: 1, Name: "Atomic Habits", Author: "James Clear"})
 	books = append(books, Book{ID: 2, Name: "Hyperfocus", Author: "Chris Bailey"})
 
+	// Handlers
 	http.HandleFunc("/api/v1/books", func(w http.ResponseWriter, r *http.Request) {
 		switch r.Method {
 		case http.MethodGet:
@@ -137,5 +138,7 @@ func main() {
 			deleteBook(w, r)
 		}
 	})
+
+	// Serve traffic
 	http.ListenAndServe(":8000", nil)
 }
