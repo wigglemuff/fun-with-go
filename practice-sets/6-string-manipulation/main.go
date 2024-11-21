@@ -128,6 +128,49 @@ func stringCompression(s string) string {
 	return res
 }
 
+// First attempt at complex string compression
+func compressString(s string, maxParts int) string {
+	parts := strings.Split(s, "/")
+	var words [][]string
+	for _, part := range parts {
+		tmp := strings.Split(part, ".")
+		for idx, w := range tmp {
+			tmp[idx] = compressWord(w)
+		}
+		if len(tmp) > maxParts {
+			var tmp2 []string
+			for i := 0; i < maxParts-1; i++ {
+				tmp2 = append(tmp2, tmp[i])
+			}
+			tmp2 = append(tmp2, compressWord(strings.Join(tmp[maxParts-1:], ".")))
+			tmp = tmp2
+		}
+		words = append(words, tmp)
+	}
+	// fmt.Println(words)
+	var res1 []string
+	for _, word := range words {
+		res1 = append(res1, strings.Join(word, "."))
+	}
+	// fmt.Println(strings.Join(res1, "/"))
+	return strings.Join(res1, "/")
+}
+
+func compressWord(word string) string {
+	if len(word) <= 1 {
+		return word
+	}
+	// return string(word[0]) + strconv.Itoa(len(word)-2) + string(word[len(word)-1])
+	var count int
+	for idx, r := range word {
+		if idx == 0 || idx == len(word)-1 || unicode.IsSpace(r) {
+			continue
+		}
+		count++
+	}
+	return string(word[0]) + strconv.Itoa(count) + string(word[len(word)-1])
+}
+
 func main() {
 	p := fmt.Println
 
@@ -147,5 +190,8 @@ func main() {
 
 	p(stringCompression("aabcccccaaa")) // a2b1c5a3
 	p(stringCompression("aabccccca"))   // a2b1c5a1
+
+	p(compressString("amazon.com/orders/checkout/customer.john.doe", 2)) // a4n.c1m/o4s/c6t/c6r.j5e
+	p(compressString("amazon.com/orders/checkout/customer.john.doe", 3)) // a4n.c1m/o4s/c6t/c6r.j2n.d1e
 
 }
